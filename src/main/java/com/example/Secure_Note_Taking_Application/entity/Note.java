@@ -28,7 +28,7 @@ public class Note {
 
 
     @ManyToOne
-    @JoinColumn(name = "OwnerUserName", nullable = false)
+    @JoinColumn(name = "OwnerUserName",referencedColumnName = "username", nullable = false)
 
     private AppUser appUser;
 
