@@ -1,6 +1,7 @@
 package com.example.Secure_Note_Taking_Application.controller;
 
 import com.example.Secure_Note_Taking_Application.dto.NoteRequest;
+import com.example.Secure_Note_Taking_Application.dto.NoteResponse;
 import com.example.Secure_Note_Taking_Application.entity.Note;
 import com.example.Secure_Note_Taking_Application.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +22,17 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<Note>> getAllNotes(Authentication authentication) {
+    public ResponseEntity<List<NoteResponse>> getAllNotes(Authentication authentication) {
         return userService.getAllNotes(authentication.getName());
     }
 
+
     @GetMapping("/{id}")
-    public Note getNoteById(@PathVariable long id,Authentication authentication) {
+    public NoteResponse getNoteById(@PathVariable long id,Authentication authentication) {
 
         return userService.getNote(id,authentication.getName());
     }
+
 
     @PostMapping
     public ResponseEntity<?> createNote(@RequestBody NoteRequest noteRequest, Authentication authentication) {

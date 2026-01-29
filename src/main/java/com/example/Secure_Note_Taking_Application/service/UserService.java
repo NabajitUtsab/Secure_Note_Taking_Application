@@ -1,6 +1,7 @@
 package com.example.Secure_Note_Taking_Application.service;
 
 import com.example.Secure_Note_Taking_Application.dto.NoteRequest;
+import com.example.Secure_Note_Taking_Application.dto.NoteResponse;
 import com.example.Secure_Note_Taking_Application.entity.AppUser;
 import com.example.Secure_Note_Taking_Application.entity.Note;
 import com.example.Secure_Note_Taking_Application.repository.AppUserRepo;
@@ -21,30 +22,44 @@ public class UserService {
     private final NoteRepo noteRepo;
     private final AppUserRepo appUserRepo;
 
-    public ResponseEntity<List<Note> >getAllNotes(String username) {
+    public ResponseEntity<List<NoteResponse>> getAllNotes(String username) {
 
         AppUser user = appUserRepo.findByUsername(username).orElseThrow();
 
-        return ResponseEntity.ok(noteRepo.findByAppUser(user));
+        List<Note> noteList = noteRepo.findByAppUser(user);
+
+        List<NoteResponse> noteResponses = noteList.stream().
+                map(note -> NoteResponse.builder().
+                        id(note.getId()).
+                        title(note.getTitle()).
+                        content(note.getContent()).build()
+                ).toList();
+
+        return ResponseEntity.ok(noteResponses);
 
 
     }
 
-    public Note getNote(Long id,String username) {
+    public NoteResponse getNote(Long id, String username) {
 
         AppUser user = appUserRepo.findByUsername(username).orElseThrow();
 
         Note note = noteRepo.findById(id).orElseThrow();
 
-        if(note.getAppUser().getUsername().equals(user.getUsername()) ) {
+        if (note.getAppUser().getUsername().equals(user.getUsername())) {
 
-            return note;
+            return NoteResponse.builder().
+                    id(note.getId()).
+                    title(note.getTitle()).
+                    content(note.getContent()).
+                    build();
+
         }
 
         return null;
     }
 
-    public ResponseEntity<?> createNote(NoteRequest noteRequest,String username) {
+    public ResponseEntity<?> createNote(NoteRequest noteRequest, String username) {
 
         AppUser user = appUserRepo.findByUsername(username).orElseThrow();
 
@@ -58,26 +73,40 @@ public class UserService {
     }
 
 
-    public ResponseEntity<?> updateNote(NoteRequest noteRequest,Long id,String username){
+    public ResponseEntity<?> updateNote(NoteRequest noteRequest, Long id, String username) {
 
-        Note note = getNote(id,username);
+        AppUser user = appUserRepo.findByUsername(username).orElseThrow();
 
-        note.setId(id);
-        note.setTitle(noteRequest.getTitle());
-        note.setContent(noteRequest.getContent());
+        Note note = noteRepo.findById(id).orElseThrow();
 
-         noteRepo.save(note);
+        if (note.getAppUser().getUsername().equals(user.getUsername())) {
+            note.setId(id);
+            note.setTitle(noteRequest.getTitle());
+            note.setContent(noteRequest.getContent());
 
-         return ResponseEntity.ok("Note successfully updated");
+            noteRepo.save(note);
+
+            return ResponseEntity.ok("Note successfully updated");
+        }
+
+        return ResponseEntity.ok("Note does not exist");
+
     }
 
 
-    public ResponseEntity<?> deleteNote(Long id, String username){
 
-        Note note = getNote(id,username);
+    public ResponseEntity<?> deleteNote(Long id, String username) {
 
-        noteRepo.delete(note);
-        return ResponseEntity.ok("Deleted successfully");
+        AppUser user = appUserRepo.findByUsername(username).orElseThrow();
+
+        Note note = noteRepo.findById(id).orElseThrow();
+
+        if (note.getAppUser().getUsername().equals(user.getUsername())) {
+            noteRepo.delete(note);
+            return ResponseEntity.ok("Deleted successfully");
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
 

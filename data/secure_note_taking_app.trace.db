@@ -297,3 +297,9 @@ Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection wa
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 88 more
+2026-01-29 23:07:12.885306+06:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM USER_TABLE USER_ROLES [*]NOTE_TABLE"; SQL statement:
+SELECT * FROM USER_TABLE USER_ROLES NOTE_TABLE [42000-240]
+2026-01-29 23:07:13.823677+06:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM USER_TABLE USER_ROLES [*]NOTE_TABLE"; SQL statement:
+SELECT * FROM USER_TABLE USER_ROLES NOTE_TABLE [42000-240]
