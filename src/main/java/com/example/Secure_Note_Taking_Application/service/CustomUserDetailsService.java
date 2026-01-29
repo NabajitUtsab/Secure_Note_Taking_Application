@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 password(appUser.getPassword()).
                 authorities(appUser.getRoles().
                         stream().
-                        map(role -> new SimpleGrantedAuthority("ROLES_"+role.toUpperCase())).toList()).
+                        map(role -> new SimpleGrantedAuthority(role.toUpperCase())).toList()).
                 build();
     }
 

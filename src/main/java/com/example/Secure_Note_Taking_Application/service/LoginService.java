@@ -19,7 +19,7 @@ public class LoginService {
     private final AppUserRepo appUserRepo;
     private final AuthenticationManager authenticationManager;
 
-    ResponseEntity<RegistrationResponse> login(RegisterRequest registerRequest) {
+    public  ResponseEntity<RegistrationResponse> login(RegisterRequest registerRequest) {
 
         try {
             authenticationManager.authenticate(
@@ -35,7 +35,7 @@ public class LoginService {
                 .encodeToString((registerRequest.getName() + ":" + registerRequest.getPassword()).getBytes());
 
         return ResponseEntity.ok(new RegistrationResponse(
-                registerRequest.getName(),
+                registerRequest.getRoles()+" "+registerRequest.getName()+" login successfully",
                 "Your token is: " + token
         ));
     }

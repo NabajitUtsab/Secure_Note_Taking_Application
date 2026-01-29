@@ -19,18 +19,5 @@ public class AdminService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    ResponseEntity<RegistrationResponse> AdminRegistration(RegisterRequest registerRequest){
 
-
-        appUserRepo.save(AppUser.builder().
-                username(registerRequest.getName()).
-                password(bCryptPasswordEncoder.encode(registerRequest.getPassword())).
-                roles(Set.of("ADMIN")).
-                build());
-
-        return ResponseEntity.ok(RegistrationResponse.builder().
-                username("name : "+registerRequest.getName()).
-                message("message : Admin Registration successful!").
-                build());
-    }
 }
