@@ -4,10 +4,10 @@ import com.example.Secure_Note_Taking_Application.dto.NoteRequest;
 import com.example.Secure_Note_Taking_Application.entity.Note;
 import com.example.Secure_Note_Taking_Application.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<Note> getAllNotes(Authentication authentication) {
+    public ResponseEntity<List<Note>> getAllNotes(Authentication authentication) {
         return userService.getAllNotes(authentication.getName());
     }
 
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String createNote(@RequestBody NoteRequest noteRequest, Authentication authentication) {
+    public ResponseEntity<?> createNote(@RequestBody NoteRequest noteRequest, Authentication authentication) {
 
         String username = authentication.getName();
 
@@ -40,11 +40,17 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String updateNote(@PathVariable long id,@RequestBody NoteRequest noteRequest,Authentication authentication){
+    public ResponseEntity<?> updateNote(@PathVariable long id,@RequestBody NoteRequest noteRequest,Authentication authentication){
         String username = authentication.getName();
 
         return userService.updateNote(noteRequest,id,username);
 
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteNote(@PathVariable long id,Authentication authentication){
+        String username = authentication.getName();
+        return userService.deleteNote(id,username);
     }
 
 }

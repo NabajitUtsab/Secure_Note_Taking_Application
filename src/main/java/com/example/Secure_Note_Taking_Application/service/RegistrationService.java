@@ -44,8 +44,8 @@ public class RegistrationService {
                 build());
 
         return ResponseEntity.ok(RegistrationResponse.builder().
-                username("name : "+registerRequest.getName()).
-                message("message : Admin Registration successful!").
+                username(registerRequest.getName()).
+                message("Admin Registration successful!").
                 build());
     }
 

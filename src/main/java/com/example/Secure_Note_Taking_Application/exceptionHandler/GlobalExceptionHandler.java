@@ -15,9 +15,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CommonResponse> handleNoSuchElementException(NoSuchElementException e) {
         return ResponseEntity.ok(
                 CommonResponse.builder().
-                        timestamp("timestamp :"+ Instant.now().toString()).
-                        error("error :"+ e.getClass().toString()).
-                        message("message :"+ e.getMessage()).
+                        timestamp(Instant.now().toString()).
+                        error(e.getClass().toString()).
+                        message( e.getMessage()).
                         build()
         );
     }
